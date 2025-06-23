@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+              <h5><em class="bi bi-list-task"></em> LPAR
+                <small class="text-muted">Tasks</small><small class="float-end"><button type="button" class="btn btn-sm btn-secondary mx-1" onclick="checkAll('flexSwitchCheckChecked');" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Click to select/unselect all"><em class="bi bi-ui-checks"></em> select/unselect all</button><button class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Check the LPARs that were selected before doing the batch run" onclick="document.getElementById('tasks_form').submit();"><em class="bi bi-lightning-charge-fill"></em> Batch execution tasks</button></small>
+              </h5>
+              <hr class="bg-dark">
+              <form id="tasks_form" action="/lpar/tasks/run" method="post">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <table id="datatable_load" class="table table-hover pt-3">
+                  <thead>
+                    <tr class="bg-dark text-light align-middle">
+                      <th scope="col">LPAR</th>
+                      <th scope="col">Hostname</th>
+                      <th scope="col">Syslog Qualifier</th>
+                      <th scope="col">Username</th>
+                      <th scope="col">Batch execution </th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for result in results %}
+                    <tr>
+                      <th scope="row">{{ result["lpar"]|upper }}</th>
+                      <td>{{ result["hostname"] }}</td>
+                      <td>{{ result["dataset"] }}</td>
+                      <td>{{ result["username"] }}</td>
+                      <td class="text-center">
+                        <div class="form-check form-switch text-center">
+                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="identifier[]" value="{{ result['id'] }}">
+                        </div>
+                      </td>
+                      <td>
+                        <a href="/lpar/tasks/run/{{ result['id'] }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Running tasks for {{ result['lpar']|upper }} only"><em class="bi bi-lightning-charge-fill"></em></a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </form>
+{% endblock %}

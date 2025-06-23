@@ -1,0 +1,45 @@
+apiVersion: cirrus.ibm.com/v1alpha1
+kind: Application
+metadata:
+  name: chcp-zos-automation-zplatipld-prod
+  labels:
+    applications.cirrus.ibm.com/autodeploy: "true"
+    applications.cirrus.ibm.com/pipeline: a85904cf-5b5e-4152-ae42-5825f3faf3c5
+spec:
+  env:
+    - name: ENVIRONMENT
+      value: PROD
+    - name: PROJECT_ID
+      value: 11d3d5ec-5cf5-4acd-8ccf-59fa1576929f
+    - name: CLUSTER_ID
+      value: wdc-containers-prod2
+  livenessProbe:
+    httpGet:
+      path: /health/ping
+      port: 5000
+    periodSeconds: 30
+    timeoutSeconds: 30
+  readinessProbe:
+    httpGet:
+      path: /health/ping
+      port: 5000
+    periodSeconds: 30
+    timeoutSeconds: 30
+  replicas: 1
+  quota: q1gb
+  volumeMounts:
+    - mountPath: /zplatipld
+      name: results-prd
+    - mountPath: /var/run/cirrus-auth-pair
+      name: cirrus-auth-pair
+  volumes:
+    - name: cirrus-auth-pair
+      secret:
+        secretName: cirrus-auth-pair
+        optional: false
+    - name: results-prd
+      persistentVolumeClaim:
+        claimName: results-prd
+  envFrom:
+    - secretRef:
+        name: cirrus-auth-pair

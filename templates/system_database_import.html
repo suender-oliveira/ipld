@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBM | IPL Duration Tool @[{{ app.config['ENVIRONMENT'] }}]</title>
+  {% include "import_styles.html" %}
+</head>
+
+<body class="bg-dark">
+  <div class="container-fluid pt-3">
+    <div class="card">
+      <div class="card-body">
+        {% include "top_menu.html" %}
+        <hr class="bg-dark">
+        <div class="card col-12 mx-auto">
+          <div class="card-header">
+            <h1 class="modal-title fs-5 float-start" id="new_lpar"><em class="bi bi-stopwatch"></em> DATABASE
+              <small class="text-muted">Import</small>
+            </h1>
+          </div>
+          <div class="card-body">
+            <form id="lpar_insert" action="/system/database/import/add" method="post">
+              <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <div class="row g-3">
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Table" aria-label="Table" name="table">
+                  </div>
+                </div>
+                <div class="row g-3 pt-3">
+                  <div class="col-sm-8">
+                    <textarea rows="15" class="form-control" placeholder="Data do import" aria-label="Data do import" name="data_to_import"></textarea>
+                  </div>
+                </div>
+                <div class="row g-3 pt-3">
+                  <div class="col-sm-8">
+                    <button type="submit" class="btn btn-sm btn-dark">Import</button>
+                  </div>
+                </div>
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {% include "import_scripts.html" %}
+
+  <script>
+    var socket_run = io();
+    socket_run.on('tasks_scheduled', function (data) {
+      console.log(data);
+      socketIORenderSchedulerList(data)
+    });
+  </script>
+
+
+
+</body>
+
+</html>

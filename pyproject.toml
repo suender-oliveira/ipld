@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "zplatipld"
+version = "0.1.0"
+description = ""
+authors = ["Suender Oliveira <suender@ibm.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+flask = {extras = ["async"], version = "^3.1.0"}
+flask-socketio = "^5.5.1"
+flask-login = "^0.6.3"
+jinja2 = "^3.1.5"
+python-dotenv = "^1.0.1"
+schedule = "^1.2.2"
+sqlalchemy = "^2.0.37"
+asyncssh = "^2.19.0"
+pandas = "^2.2.3"
+flask-wtf = "^1.2.2"
+requests = "^2.32.3"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

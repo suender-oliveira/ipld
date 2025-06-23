@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IBM | IPL Duration Tool @[{{ app.config['ENVIRONMENT'] }}]</title>
+    {% include 'import_styles.html' %}
+  </head>
+  <body class="bg-dark">
+    <div class="container-fluid pt-3">
+        <div class="card">
+            <div class="card-body">
+                {% include 'top_menu.html' %}
+              <hr class="bg-dark">
+              <div id="task-progress">
+              </div>
+            </div>
+          </div>
+        
+    </div>
+    {% include 'import_scripts.html' %}
+
+    <script>
+      var socket = io();
+      var divElement = document.getElementById('task-progress');
+      var htmlHeaderInit = '<h6>Overall progress of completed tasks</h6><div class="progress" role="progressbar"'+
+                          ' aria-label="Default striped example" aria-valuenow="10" aria-valuemin="10"'+
+                          ' aria-valuemax="100"><div class="progress-bar progress-bar-striped" style="width: 10%">10%'+
+                            '</div></div><br>';
+      divElement.innerHTML = htmlHeaderInit;
+
+      socket.on('task_completed', function(data) {
+        socketIORender(data)
+      });
+      socket.on('task_progress', function(data) {
+        socketIORender(data)
+      });
+    </script>
+
+    
+    
+  </body>
+</html>

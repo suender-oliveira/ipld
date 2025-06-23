@@ -1,0 +1,15 @@
+{% if notification %}
+  {% if notification[0] == "success" %}
+  <div class="alert alert-success d-flex align-items-center" role="alert">
+      <div>
+        <em class="bi bi-check-square-fill"></em> {{ notification[1] }}
+      </div>
+    </div>
+  {% elif notification[0] == "danger" %}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      <div>
+        <em class="bi bi-x-square-fill"></em> {{ notification[1] }}
+      </div>
+    </div>
+  {% endif %}
+{% endif %}

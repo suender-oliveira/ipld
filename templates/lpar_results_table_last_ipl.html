@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="modal fade" id="new_lpar" aria-hidden="true" aria-labelledby="new_lparLabel" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="new_lpar"><em class="bi bi-key"></em>< LPAR
+          <small class="text-muted">Settings | New LPAR</small>
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/lpar/settings/new" method="post">
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+          <div class="row mb-3">
+            <label for="lpar" class="col-sm-2 col-form-label">LPAR Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="lpar_name" name="lpar_name" value="">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="lpar" class="col-sm-2 col-form-label">Hostname</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="hostname" name="hostname" value="">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="lpar" class="col-sm-2 col-form-label">Syslog HLQ</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="dataset" name="dataset" value="">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="lpar" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="username" name="username" value="">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-sm btn-success"><em class="bi bi-save"></em> Save</button>
+          <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal"><i
+              class="bi bi-arrow-left-square"></i> Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<h5><em class="bi bi-cpu"></em> LPAR
+  <small class="text-muted">Duration Results (Last IPL)</small><small>
+</h5>
+<hr class="bg-dark">
+<table id="datatable_results" class="table table-hover pt-3">
+  <thead>
+    <tr class="bg-dark text-light align-middle">
+      <th scope="col">LPAR</th>
+      <th scope="col">Last IPL</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <th scope="row">{{ result["sysname"]|upper }}</th>
+      <td>{{ result["last_ipl"] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

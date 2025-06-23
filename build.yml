@@ -1,0 +1,21 @@
+apiVersion: automation.cio/v1alpha1
+kind: RepositoryConfig
+ealImapNumber: "EAL-013642"
+build:
+  strategy: cirrus-deployment
+  pipeline: python-v3.11-micropipenv-container-image
+  version: v2
+  config:
+    cirrus-pipeline-name: chcp-zos-automation-zplatipld
+    service-port: "5000"
+    cirrus-project-name: zplatipld
+    cirrus-region: wdc-containers
+    install-packages-app: sqlite
+release:
+  environments:
+    - name: test
+      deploy-verification-memory-request: "q1gb"
+    - name: pre-production
+      deploy-verification-memory-request: "q1gb"
+    - name: production
+      deploy-verification-memory-request: "q1gb"

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<h5><em class="bi bi-cpu"></em> LPAR
+  <small class="text-muted">Settings</small>
+</h5>
+<hr class="bg-dark">
+<center>
+<div class="card col-8 mx-auto">
+  <div class="card-header">
+    <h1 class="modal-title fs-5 float-start" id="new_lpar"><em class="bi bi-cpu"></em> LPAR
+      <small class="text-muted">Settings | New LPAR</small></h1>
+  </div>
+  <div class="card-body">
+    <form class="form-floating" action="/lpar/settings/new/step-2" method="post">
+      <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <div class="row g-3">
+          <div class="col-sm">
+            <input id="lpar" type="text" class="form-control" placeholder="LPAR" aria-label="LPAR" name="lpar" required>
+          </div>
+          <div class="col-sm">
+            <input type="text" class="form-control" placeholder="Hostname" aria-label="hostname" name="hostname" required>
+          </div>
+          <div class="col-sm">
+            <input type="text" class="form-control" placeholder="Syslog Dataset Qualifier" aria-label="Dataset" name="dataset" required>
+          </div>
+          <div class="col-sm">
+            <input type="text" class="form-control" placeholder="User ID" aria-label="User ID" name="user_id" required>
+          </div>
+        </div>
+
+        <div class="row g-3 pt-3">
+          <div class="col-sm-2">
+            <a href="/lpar/settings" class="btn btn-sm btn-outline-dark w-100"><em class="bi bi-arrow-left-square"></em> &nbsp; Back</a>
+          </div>
+          <div class="col-sm-2">
+            <button type="submit" class="btn btn-sm btn-dark w-100"><em class="bi bi-arrow-right-square"></em> &nbsp; Next</button>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IBM | IPL Duration Tool @[{{ app.config['ENVIRONMENT'] }}]</title>
+    {% include "import_styles.html" %}
+  </head>
+  <body class="bg-dark">
+    <div class="container-fluid pt-3">
+        <div class="card">
+            <div class="card-body">
+                {% include "top_menu.html" %}
+              <hr class="bg-dark">
+
+              <div class="card col-8 mx-auto">
+                <div class="card-header">
+                  <h1 class="modal-title fs-5 float-start" id="new_lpar"><em class="bi bi-cpu"></em> LPAR
+                    <small class="text-muted">Settings | New LPAR</small></h1>
+                </div>
+                <div class="card-body">
+                  <form id="lpar_insert" action="/lpar/settings/new" method="post">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                      <div class="row g-3">
+                        <div class="col-sm">
+                          <input type="text" class="form-control" placeholder="LPAR" aria-label="LPAR" name="lpar" value="{{ results['lpar'] }}" disabled>
+                          <input type="hidden" name="lpar" value="{{ results['lpar'] }}">
+                        </div>
+                        <div class="col-sm">
+                          <input type="text" class="form-control" placeholder="Hostname" aria-label="hostname" name="hostname" value="{{ results['hostname'] }}" disabled>
+                          <input type="hidden" name="hostname" value="{{ results['hostname'] }}">
+                        </div>
+                        <div class="col-sm">
+                          <input type="text" class="form-control" placeholder="Syslog Dataset Qualifier" aria-label="Dataset" name="dataset" value="{{ results['dataset'] }}" disabled>
+                          <input type="hidden" name="dataset" value="{{ results['dataset'] }}">
+                        </div>
+                        <div class="col-sm">
+                          <input type="text" class="form-control" placeholder="User ID" aria-label="User ID" name="user_id" value="{{ results['user_id'] }}" disabled>
+                          <input type="hidden" name="user_id" value="{{ results['user_id'] }}">
+                        </div>
+                      </div>
+                      <div class="pt-3" id="dry-run">
+                      </div>
+                      <div id="din_buttons" class="row g-3 pt-3">
+                        
+                      </div>
+                  </form>
+                </div>
+              </div>
+              
+              
+            </div>
+          </div>
+    </div>
+    {% include "import_scripts.html" %}
+
+    <script>
+      var socket_run = io();
+
+
+      socket_run.on('dry_run', function(data) {
+        console.log(data);
+        socketIORenderDryRun(data)
+      });
+    </script>
+
+    
+    
+  </body>
+</html>

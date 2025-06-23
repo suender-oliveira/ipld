@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<h5><em class="bi bi-people"></em> PEOPLE
+  <small class="text-muted">Access Management</small>
+</h5>
+<hr class="bg-dark">
+<table id="datatable_load" class="table table-hover pt-3">
+  <thead>
+    <tr class="bg-dark text-light align-middle">
+      <th scope="col">Name</th>
+      <th scope="col">Username</th>
+      <th class="text-center" scope="col" >Approval Status</th>
+      <th class="col-md-1" scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in results %}
+    <tr>
+      <th scope="row">{{ result['name']|upper }} {{ result['last_name']|upper }}</th>
+      <td>{{ result['username'] }}</td>
+      <td class="text-center">
+        {% if result['approved'] == 1 %}
+          <img height="24" width="24" src="{{ url_for('static', filename='images/green_circle.png') }}"> 
+        {% else %}
+          <img height="24" width="24" src="{{ url_for('static', filename='images/red_circle.png') }}">
+        {% endif %}
+      </td>
+      <td>
+        {% if result['approved'] == 1 %}
+        <a href="/people/access/approve/action/block/{{ result['id'] }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Block"><em class="bi bi-check-square"></em></a>
+        {% else %}
+        <a href="/people/access/approve/action/unblock/{{ result['id'] }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Unblock"><em class="bi bi-check-square-fill"></em></a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

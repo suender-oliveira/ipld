@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IBM | IPL Duration Tool @[{{ app.config['ENVIRONMENT'] }}]</title>
+    {% include 'import_styles.html' %}
+  </head>
+  <body class="bg-dark">
+    <div class="container-fluid pt-3">
+        <div class="card">
+            <div class="card-body">
+                {% include 'top_menu.html' %}
+                <hr class="bg-dark">
+                {% include 'notification_messages.html' %}
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% include 'import_scripts.html' %}
+  </body>
+</html>

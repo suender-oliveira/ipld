@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+<h5><em class="bi bi-cpu"></em> LPAR
+  <small class="text-muted">Reports</small>
+  <small class="text-muted"></small>
+  
+</small>
+</h5>
+<hr class="bg-dark">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/lpar/reports">ALL</a></li>
+                    {% for dir in dir_path.split('/') if dir %}
+                    <li class="breadcrumb-item"><a href="/lpar/reports/{{ dir }}">{{ dir|upper }}</a></li>
+                    {% endfor %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ dir_path.split('/')[-1]|upper }}</li>
+                </ol>
+              </nav>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for file in files %}
+<tr>
+    <td>
+        {% if os.path.isdir(os.path.join('/zplatipld/results', dir_path, file)) %}
+        <em class="bi bi-folder2"></em> <a href="/lpar/reports{{ dir_path }}/{{ file }}/">{{ file }}</a>
+        {% else %}
+        <em class="bi bi-filetype-csv"></em> <a href="/lpar/reports/download/{{ dir_path }}{{ file }}">{{ file }}</a>
+        {% endif %}
+    </td>
+    <td>
+        {% if os.path.isdir(os.path.join(root_dir, dir_path, file)) %}
+        Directory
+        {% else %}
+        File
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}

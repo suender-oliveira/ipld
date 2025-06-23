@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "https-sonarqube-prod-apps-wdc-sonarqube-prod-core-cirrus-ibm-com-",
+        "projectKey": "396532-1416496"
+    }
+}

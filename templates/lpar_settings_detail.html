@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block content %}
+<h5><em class="bi bi-cpu"></em> LPAR
+  <small class="text-muted">Settings for {{ results[0]['lpar']|upper }}</small>
+</h5>
+<hr class="bg-dark">
+<form class="row g-3" action="/lpar/settings/update/{{ results[0][5] }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+  <div class="col-md">
+    <label for="lpar" class="form-label">LPAR</label>
+    <input type="text" class="form-control" id="lpar" name="lpar" value="{{ results[0]['lpar']|upper }}">
+  </div>
+
+  <div class="col-md">
+    <label for="hostname" class="form-label">Hostname</label>
+    <input type="text" class="form-control" id="hostname" name="hostname" value="{{ results[0]['hostname']|lower }}">
+  </div>
+
+  <div class="col-md">
+    <label for="dataset" class="form-label">Syslog Dataset</label>
+    <input type="text" class="form-control" id="dataset" name="dataset" value="{{ results[0]['dataset']|upper }}">
+  </div>
+
+  <div class="col-md">
+    <label for="username" class="form-label">User ID</label>
+    <input type="text" class="form-control" id="username" name="username" value="{{ results[0]['username'] }}">
+  </div>
+
+  <div class="col-md">
+    <label for="enabled" class="form-label">Status</label>
+    <select name="enabled" id="enabled" class="form-select">
+      <option value="1" {% if results[0]['enabled'] == 1 %}selected{% endif %}>Active</option>
+      <option value="0" {% if results[0]['enabled'] == 0 %}selected{% endif %}>Inactive</option>
+    </select>
+  </div>
+
+  <div class="col-md">
+    <label for="username" class="form-label">Schedule</label>
+    <input type="text" class="form-control" id="schedule" name="schedule" value="{{ results[0]['schedule'] }}">
+  </div>
+  
+  <div class="row pt-3">
+    <div id="dry-run" class="col-sm">
+    </div>
+  </div>
+  
+ 
+  <div class="row g-3 pt-3">
+    
+    <div class="col-sm-2">
+      <a href="/lpar/settings" class="btn btn-sm btn-outline-secondary w-100"><em class="bi bi-arrow-left-square"></em> &nbsp; Back</a>
+    </div>
+
+    <div class="col-sm-2">
+      <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token() }}">
+      <button type="button" class="btn btn-sm btn-dark w-100"
+      onclick="call_dry_run(document.getElementById('lpar').value, 
+      document.getElementById('hostname').value, 
+      document.getElementById('dataset').value, 
+      document.getElementById('username').value,
+      document.getElementById('csrf_token').value);">
+      <em class="bi bi-journal-code"></em> &nbsp; Dry run</button>
+    </div>
+
+    <div class="col-sm-2">
+      <button type="submit" class="btn btn-sm btn-dark w-100"><em class="bi bi-save"></em>  &nbsp; Save changes</button>
+    </div>
+
+    
+  </div>
+  
+  
+</form>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+<script>
+  var socket_run = io();
+  socket_run.on('dry_run', function(data) {
+    console.log(data);
+    socketIORenderDryRun(data)
+  });
+</script>
+{% endblock %}

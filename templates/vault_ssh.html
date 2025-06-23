@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Vertically centered modal -->
+<div class="modal fade" id="vault_new_keys" aria-hidden="true" aria-labelledby="vault_new_keysLabel" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="vault_new_keys"><em class="bi bi-key"></em></i> VAULT
+          <small class="text-muted">SSH Keys | New</small></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/vault/ssh/save" method="post">
+
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+          <div class="row mb-3">
+            <label for="lpar" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="username" name="username" value="">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="hostname" class="col-sm-2 col-form-label">Private Key</label>
+            <div class="col-sm-10">
+              <textarea rows="5" class="form-control form-control-sm" id="private_key" name="private_key" value=""></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="dataset" class="col-sm-2 col-form-label">Public Key</label>
+            <div class="col-sm-10">
+              <textarea rows="3" class="form-control form-control-sm" id="public_key" name="public_key" value=""></textarea>
+            </div>
+          </div>
+          <div class="row g-3 pt-3">
+            <div class="col-sm-3">
+              <button type="button" class="btn btn-sm btn-outline-secondary w-100" data-bs-dismiss="modal"><em class="bi bi-arrow-left-square"></em> Back</button>
+            </div>
+
+            <div class="col-sm-3">
+              <button type="submit" class="btn btn-sm btn-dark w-100"><em class="bi bi-save"></em> Save keys</button>
+            </div>
+
+            
+          </div>
+          
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h5><em class="bi bi-key"></em> VAULT
+  <small class="text-muted">SSH Keys</small><small><button class="btn btn-sm btn-success float-end"data-bs-target="#vault_new_keys" data-bs-toggle="modal" ><em class="bi bi-plus-circle"></em> New</button></small>
+</h5>
+<hr class="bg-dark">
+<form id="tasks_form" action="/lpar/tasks/run" method="post">
+  <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+  <table id="datatable_load" class="table table-hover pt-3">
+    <thead>
+      <tr class="bg-dark text-light align-middle">
+        <th scope="col">Username</th>
+        <th scope="col">Private Key</th>
+        <th scope="col">Public Key</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in results %}
+      <tr>
+        <th scope="row">{{ result["username"]|upper }}</th>
+        <td>
+          <div class="input-group">
+            <span class="input-group-text" id="private_key_placeholder"><em class="bi bi-key"></em></span>
+            <input type="text" class="form-control" placeholder="ENCRYPTED" aria-label="Username" disabled>
+          </div>
+        </td>
+        <td><div class="input-group">
+          <span class="input-group-text" id="public_key_input_group"><em class="bi bi-key"></em></span>
+          <input type="text" class="form-control" id="public_key" value="{{ result['public_key'] }}" >
+        </div></td>
+        <td class="text-center">
+          <!-- <button type="button" class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></button>
+          <button type="button" class="btn btn-sm btn-danger"><i class="bi bi-x-square"></i></button> -->
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% endblock %}

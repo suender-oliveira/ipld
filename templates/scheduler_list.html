@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IBM | IPL Duration Tool @[{{ app.config['ENVIRONMENT'] }}]</title>
+  {% include "import_styles.html" %}
+</head>
+
+<body class="bg-dark">
+  <div class="container-fluid pt-3">
+    <div class="card">
+      <div class="card-body">
+        {% include "top_menu.html" %}
+        <hr class="bg-dark">
+        <div class="card col-12 mx-auto">
+          <div class="card-header">
+            <h1 class="modal-title fs-5 float-start" id="new_lpar"><em class="bi bi-stopwatch"></em> SCHEDULER
+              <small class="text-muted">Entries</small>
+            </h1>
+          </div>
+          <div class="card-body">
+            <table id="datatable_load_10" class="table table-hover pt-3">
+              <thead>
+                <tr class="bg-dark text-light align-middle">
+                  <th scope="col">LPAR</th>
+                  <th scope="col">Last run</th>
+                  <th scope="col">Next run</th>
+                  <th scope="col">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for result in results %}
+                <tr>
+                  <th scope="row">{{ result["lpar"]|first|upper }}</th>
+                  <td>{{ result["last_run"] }}</td>
+                  <td>{{ result["next_run"] }}</td>
+                  <td>Will be running {{ result["interval"] }} in {{ result["unit"] }} ({{ result["period"] }})</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  {% include "import_scripts.html" %}
+
+</body>
+
+</html>
