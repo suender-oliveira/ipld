@@ -85,7 +85,7 @@ class SQLAlchemyRepository:
         self,
         model: type[Base],
         distinct: str | None = None,
-        condition: dict[str, Any] | None = None,
+        criteria: dict[str, Any] | None = None,
         in_values: dict[str, list[Any]] | None = None,
     ) -> list[Base]:
         """
@@ -108,10 +108,10 @@ class SQLAlchemyRepository:
 
         if distinct:
             query = query.distinct().group_by(text(distinct))
-        if condition:
+        if criteria:
             filter_conditions = [
                 getattr(model, field) == value
-                for field, value in condition.items()
+                for field, value in criteria.items()
             ]
             query = query.filter(and_(*filter_conditions))
         if in_values:
@@ -196,6 +196,28 @@ class UserRepository(SQLAlchemyRepository):
     def __init__(self, db_url: str) -> None:
         super().__init__(db_url)
         self.model = UserModel
+
+    def find(
+        self,
+        criteria: dict[str, Any] | None = None,
+        in_values: dict[str, list[Any]] | None = None,
+    ) -> list[Base]:
+        return self.read(self.model, criteria=criteria, in_values=in_values)
+
+    def get_by_id(
+        self,
+        user_id: int,
+    ) -> list[Base]:
+        return self.read(self.model, criteria={"id": user_id})
+
+    def get_by_username(
+        self,
+        username: str,
+    ) -> list[Base]:
+        return self.read(self.model, criteria={"username": username})
+
+    def get_all(self) -> list:
+        return self.read(self.model)
 
 
 class VaultRepository(SQLAlchemyRepository):

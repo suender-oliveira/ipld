@@ -13,6 +13,7 @@ from app.application.dtos import (
 from app.domain.entities import User
 from app.domain.repositories import IUserRepository
 from app.domain.services import IPasswordHasher
+from app.infrastructure.persistence.models import UserModel
 
 
 class AuthService:
@@ -74,7 +75,7 @@ class AuthService:
                 None if the login failed.
         """
 
-        users = self.user_repo.find(criteria={"username": dto.username})
+        users = self.user_repo.get_by_username(username=dto.username)
         if not users:
             return None
 

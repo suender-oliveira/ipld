@@ -125,7 +125,9 @@ def create_auth_blueprint(
             domain_user = auth_service.get_user_by_id(int(user_id))
             if domain_user:
                 return FlaskLoginUser(
-                    domain_user.id, domain_user.username, domain_user.approved
+                    domain_user[0].id,
+                    domain_user[0].username,
+                    domain_user[0].approved,
                 )
         except Exception as e:
             print(f"Error loading user: {e}")
@@ -165,7 +167,7 @@ def create_auth_blueprint(
             login_user(flask_user)
             session["approved"] = authenticated_user.approved
             flash("Logged in successfully!", "success")
-            return redirect(url_for("main_bp.index"))
+            return redirect(url_for("index"))
         if authenticated_user and authenticated_user.approved == 0:
             flash(
                 "Your account is pending approval. Please wait for an admin.",
